@@ -1,0 +1,25 @@
+{
+  "rewrites": [
+    { "source": "/Amazon-Design.html", "destination": "/api/serve-page?page=Amazon-Design.html" },
+    { "source": "/System-Design.html", "destination": "/api/serve-page?page=System-Design.html" },
+    { "source": "/AZURECICD.html", "destination": "/api/serve-page?page=AZURECICD.html" },
+    { "source": "/AZURECICD%20-%20Copy.html", "destination": "/api/serve-page?page=AZURECICD%20-%20Copy.html" },
+    { "source": "/Dotnet-Roadmap.html", "destination": "/api/serve-page?page=Dotnet-Roadmap.html" },
+    { "source": "/Interview-Studio.html", "destination": "/api/serve-page?page=Interview-Studio.html" },
+    { "source": "/DSA.html", "destination": "/api/serve-page?page=DSA.html" },
+    { "source": "/C%23Dotnet.html", "destination": "/api/serve-page?page=C%23Dotnet.html" },
+    { "source": "/How%20AI%20work.html", "destination": "/api/serve-page?page=How%20AI%20work.html" },
+    { "source": "/Project.html", "destination": "/api/serve-page?page=Project.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(self), geolocation=(), clipboard-read=(), clipboard-write=()" }
+      ]
+    }
+  ]
+}

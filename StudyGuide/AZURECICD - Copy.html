@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Azure and CI/CD Visual Memory Artifact</title>
+    <style>
+      :root {
+        --bg: #07101d;
+        --card: #10243a;
+        --line: #2d5b7b;
+        --cyan: #63e6ff;
+        --gold: #ffd166;
+        --green: #63e6a5;
+        --muted: #a9c0d5;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 20% 0, #173b61, transparent 32%), var(--bg);
+        color: #f4f9ff;
+        font-family:
+          Segoe UI,
+          Arial,
+          sans-serif;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 290px 1fr;
+        min-height: 100vh;
+      }
+      .side {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        padding: 22px 16px;
+        background: #081522ee;
+        border-right: 1px solid #28445c;
+      }
+      .brand {
+        font-size: 24px;
+        font-weight: 900;
+      }
+      .brand span {
+        color: var(--cyan);
+      }
+      .muted {
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .nav button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        margin: 6px 0;
+        padding: 11px;
+        border-radius: 10px;
+        color: var(--muted);
+        background: transparent;
+        border: 1px solid transparent;
+        cursor: pointer;
+      }
+      .nav button:hover,
+      .nav button.active {
+        background: #112b43;
+        color: white;
+        border-color: #365d7b;
+      }
+      .main {
+        padding: 28px;
+        max-width: 1500px;
+      }
+      .hero {
+        padding: 30px;
+        border: 1px solid #38698b;
+        border-radius: 24px;
+        background: linear-gradient(135deg, #0267a6aa, #412877aa);
+        box-shadow: 0 20px 70px #0008;
+      }
+      .hero h1 {
+        font-size: clamp(30px, 4vw, 54px);
+        margin: 0;
+      }
+      .hero b {
+        color: var(--cyan);
+      }
+      .flow {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 22px 0;
+      }
+      .flow span {
+        padding: 11px 13px;
+        border-radius: 12px;
+        background: #091a2d;
+        border: 1px solid #3c6585;
+        animation: float 3s ease-in-out infinite;
+      }
+      .flow span:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+      .flow span:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+      .flow span:nth-child(4) {
+        animation-delay: 0.9s;
+      }
+      .flow span:nth-child(5) {
+        animation-delay: 1.2s;
+      }
+      .flow span:nth-child(6) {
+        animation-delay: 1.5s;
+      }
+      @keyframes float {
+        50% {
+          transform: translateY(-6px);
+          box-shadow: 0 8px 22px #63e6ff22;
+        }
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .controls input,
+      .controls button {
+        padding: 12px;
+        border-radius: 11px;
+        border: 1px solid #3d6481;
+        background: #081624;
+        color: white;
+      }
+      .controls input {
+        flex: 1;
+        min-width: 230px;
+      }
+      .sectionHead {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 32px 0 13px;
+      }
+      .subjectToggle {
+        flex: 0 0 auto;
+        padding: 7px 10px;
+        border: 1px solid #3d6481;
+        border-radius: 8px;
+        background: #081624;
+        color: white;
+        cursor: pointer;
+      }
+      .subjectToggle:hover,
+      .subjectToggle:focus-visible {
+        border-color: var(--cyan);
+      }
+      .sectionHead h2 {
+        margin: 0;
+      }
+      .story {
+        color: var(--muted);
+        margin-top: 5px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+        gap: 16px;
+      }
+      .grid[hidden] {
+        display: none;
+      }
+      .card {
+        background: linear-gradient(180deg, #132a42, #0d1d2f);
+        border: 1px solid #2c506c;
+        border-radius: 18px;
+        overflow: hidden;
+        transition: 0.2s;
+      }
+      .card:hover {
+        transform: translateY(-3px);
+        border-color: #67a4ca;
+      }
+      .question {
+        padding: 18px;
+        cursor: pointer;
+      }
+      .question h3 {
+        margin: 0;
+        font-size: 17px;
+      }
+      .memory {
+        color: var(--gold);
+        margin-top: 8px;
+        font-weight: 700;
+      }
+      .diagram {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+        padding: 14px;
+        background: #071728;
+        border-radius: 13px;
+      }
+      .diagram span {
+        padding: 9px 10px;
+        background: #173650;
+        border: 1px solid #3e6a89;
+        border-radius: 10px;
+      }
+      .diagram i {
+        color: var(--cyan);
+        font-style: normal;
+      }
+      .answer {
+        display: none;
+        padding: 0 18px 18px;
+        line-height: 1.6;
+      }
+      .card.open .answer {
+        display: block;
+        animation: reveal 0.25s ease;
+      }
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+      }
+      .answer strong {
+        color: var(--green);
+      }
+      .say {
+        margin-top: 12px;
+        padding: 12px;
+        border-left: 4px solid var(--cyan);
+        background: #081827;
+        border-radius: 8px;
+      }
+      .recall {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        background: #02070ddd;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .recall.show {
+        display: flex;
+      }
+      .box {
+        width: min(760px, 100%);
+        padding: 28px;
+        background: #10253b;
+        border: 1px solid #4d7b9e;
+        border-radius: 22px;
+        text-align: center;
+      }
+      .box .answer {
+        display: none;
+        text-align: left;
+        background: #071523;
+        border-radius: 12px;
+        padding: 17px;
+        margin-top: 15px;
+      }
+      @media (max-width: 850px) {
+        .layout {
+          display: block;
+        }
+        .side {
+          position: relative;
+          height: auto;
+        }
+        .nav {
+          display: flex;
+          overflow: auto;
+        }
+        .nav button {
+          min-width: max-content;
+        }
+        .main {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="side">
+        <div class="brand">Visual <span>Memory Lab</span></div>
+        <p class="muted">
+          Azure + Azure DevOps CI/CD. Select a topic and then select a visual
+          question card.
+        </p>
+        <p id="count" class="muted"></p>
+        <div id="nav" class="nav"></div>
+      </aside>
+      <main class="main">
+        <section class="hero">
+          <h1>See the picture. Say the answer. <b>Never forget.</b></h1>
+          <p class="muted">
+            Every card contains a memory story, mini architecture diagram,
+            concise answer, and exact interview wording.
+          </p>
+          <div class="flow">
+            <span>👨‍💻 Code</span><span>🔨 Build</span><span>🧪 Test</span
+            ><span>📦 Artifact</span><span>🚀 Deploy</span
+            ><span>📡 Monitor</span>
+          </div>
+          <div class="controls">
+            <input
+              id="search"
+              placeholder="Search App Service, Key Vault, YAML, agents, rollback..."
+            /><button id="random">🎲 Random Recall</button
+            ><button id="expand">Expand All</button>
+          </div>
+        </section>
+        <div id="content"></div>
+      </main>
+    </div>
+    <div id="recall" class="recall">
+      <div class="box">
+        <div class="muted">LOOK AT THE VISUAL AND ANSWER ALOUD</div>
+        <h2 id="rq"></h2>
+        <div id="rd" class="diagram"></div>
+        <div id="ra" class="answer"></div>
+        <div class="controls" style="justify-content: center; margin-top: 16px">
+          <button id="reveal">Reveal Answer</button
+          ><button id="next">Next</button><button id="close">Close</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const DATA = {
+        "Azure Foundations": {
+          icon: "☁️",
+          story:
+            "Azure is a digital city. Regions are cities, zones are separate power districts, and resource groups are project folders.",
+          q: [
+            [
+              "IaaS vs PaaS vs SaaS?",
+              "🏗️ Empty land → 🏢 managed office → 🏨 ready hotel",
+              "Customer manages most → Azure manages platform → provider delivers complete application.",
+              "IaaS provides infrastructure, PaaS provides a managed application platform, and SaaS provides a complete application.",
+              "🏗️ IaaS|→|🏢 PaaS|→|🏨 SaaS",
+            ],
+            [
+              "Region vs Availability Zone?",
+              "🗺️ City vs separate power districts",
+              "A region is a geographic Azure area. Zones are physically separate datacenter locations within supported regions.",
+              "A region is the city; availability zones are isolated power districts inside that city.",
+              "🌍 Region|→|🏭 Zone 1|＋|🏭 Zone 2",
+            ],
+            [
+              "Scale up vs scale out?",
+              "🏠 Bigger house vs 🏘️ more houses",
+              "Scale up gives one instance more capacity. Scale out adds more instances.",
+              "Vertical scaling makes one server stronger; horizontal scaling adds servers.",
+              "🏠 Small|→|🏢 Large / 🏠＋🏠＋🏠",
+            ],
+          ],
+        },
+        "Azure Compute": {
+          icon: "⚙️",
+          story:
+            "Compute services are buildings in the Azure city. Choose how much of the building you want Azure to operate.",
+          q: [
+            [
+              "Azure VM vs App Service?",
+              "🏠 Self-managed house vs 🏨 managed hotel",
+              "A VM gives OS-level control and management responsibility. App Service manages the web-hosting platform.",
+              "I choose a VM for OS control and App Service for managed web/API hosting.",
+              "👨‍🔧 VM OS|vs|☁️ App Service",
+            ],
+            [
+              "What is Azure Functions?",
+              "🤖 Robot wakes when a bell rings",
+              "Functions run event-driven serverless code based on triggers and bindings.",
+              "Azure Functions is event-driven serverless compute. It runs code when an HTTP request, timer, queue message, or another trigger occurs.",
+              "🔔 Trigger|→|🤖 Function|→|✅ Action",
+            ],
+            [
+              "Container Apps vs AKS?",
+              "🏬 Managed food court vs 🏙️ operating the mall",
+              "Container Apps hides much orchestration. AKS provides deeper Kubernetes control.",
+              "I use Container Apps for managed container hosting and AKS when Kubernetes-level control is required.",
+              "📦 Container|→|🏬 Apps / ⚓ AKS",
+            ],
+            [
+              "What are deployment slots?",
+              "🎭 Rehearsal stage becomes main stage",
+              "Deploy to a separate App Service slot, validate it, and swap traffic.",
+              "Deployment slots support safer releases because the new version can be warmed and validated before traffic is swapped.",
+              "DEV|→|🟠 Staging|⇄|🟢 Production",
+            ],
+          ],
+        },
+        "Azure Security": {
+          icon: "🔐",
+          story:
+            "Identity is the passport office, RBAC is the access badge, managed identity is an employee badge, and Key Vault is the bank vault.",
+          q: [
+            [
+              "Authentication vs authorization?",
+              "🪪 Who are you? vs 🎟️ where can you enter?",
+              "Authentication confirms identity. Authorization decides permitted actions.",
+              "Authentication verifies who the caller is; authorization checks what the caller is allowed to do.",
+              "🪪 Identity|→|🎟️ Permission",
+            ],
+            [
+              "What is managed identity?",
+              "🤖 Azure gives the application an employee badge",
+              "An Azure-managed workload identity obtains tokens without storing application credentials.",
+              "Managed identity lets an Azure workload access supported resources without keeping client secrets in code or configuration.",
+              "☁️ Workload|→|🪪 Token|→|🔐 Resource",
+            ],
+            [
+              "What is Key Vault?",
+              "🏦 Secure bank vault",
+              "A managed service for secrets, keys, and certificates.",
+              "Azure Key Vault centralizes and protects secrets, encryption keys, and certificates with controlled access.",
+              "App|→|🪪 Identity|→|🏦 Key Vault",
+            ],
+            [
+              "What is RBAC?",
+              "🎟️ Job-based access badge",
+              "Role assignments grant defined actions to an identity at a scope.",
+              "Azure RBAC applies least-privilege access by assigning a role to an identity at subscription, resource-group, or resource scope.",
+              "Identity|＋|Role|＋|Scope|＝|Access",
+            ],
+          ],
+        },
+        "Azure Messaging": {
+          icon: "📨",
+          story:
+            "Service Bus is a reliable post office. Event Grid is a doorbell. Event Hubs is a high-volume event river.",
+          q: [
+            [
+              "Service Bus queue vs topic?",
+              "📬 One inbox vs 📰 subscribers",
+              "A queue distributes work among competing consumers. A topic sends copies to matching subscriptions.",
+              "I use a queue for one-of-many processing and a topic when multiple subscribers need the event.",
+              "Producer|→|📬 Queue|→|Consumer / Producer|→|📰 Topic|→|A＋B",
+            ],
+            [
+              "Event Grid vs Event Hubs vs Service Bus?",
+              "🔔 Doorbell vs 🌊 river vs 🏤 post office",
+              "Event Grid routes discrete events, Event Hubs ingests high-volume streams, and Service Bus handles enterprise messaging.",
+              "The choice depends on event notification, telemetry streaming, or reliable business-message workflow.",
+              "🔔 Grid|/|🌊 Hubs|/|🏤 Bus",
+            ],
+            [
+              "What is a dead-letter queue?",
+              "📦 Failed parcel room",
+              "A separate holding area for messages that cannot be delivered or processed normally.",
+              "A DLQ preserves failed messages for inspection, correction, and controlled reprocessing instead of losing them.",
+              "Queue|→|❌ Failure|→|📦 DLQ",
+            ],
+          ],
+        },
+        "CI CD Basics": {
+          icon: "🚀",
+          story:
+            "CI/CD is a parcel factory. Code enters, machines build and test it, an artifact is sealed, and controlled delivery moves it to environments.",
+          q: [
+            [
+              "CI vs CD?",
+              "🔨 Quality factory vs 🚚 delivery service",
+              "CI frequently builds and tests integrated changes. CD automates release readiness or deployment.",
+              "CI validates every change through automated build and tests. CD promotes the validated artifact through environments.",
+              "Commit|→|🔨 CI|→|📦 Artifact|→|🚀 CD",
+            ],
+            [
+              "What is a build artifact?",
+              "📦 Sealed product box",
+              "An immutable packaged output produced by a build for deployment or consumption.",
+              "The pipeline should build once and promote the same versioned artifact through environments.",
+              "Source|→|Build|→|📦 Artifact",
+            ],
+            [
+              "Continuous delivery vs continuous deployment?",
+              "📦 Ready at gate vs 🚀 automatic launch",
+              "Delivery keeps software releasable with a production decision. Deployment automatically releases qualifying changes.",
+              "Continuous delivery has a controlled production decision; continuous deployment releases automatically after all gates pass.",
+              "✅ Ready|→|👤 Approval / ✅ Ready|→|🚀 Auto",
+            ],
+          ],
+        },
+        "YAML Pipeline": {
+          icon: "📜",
+          story:
+            "YAML is the factory blueprint stored beside the product code.",
+          q: [
+            [
+              "Stage, job, step, task?",
+              "🏭 Building → room → operation → machine",
+              "A stage groups phases, a job runs on an agent, a step is ordered work, and a task is a packaged implementation.",
+              "The hierarchy is stages containing jobs, jobs containing steps, and steps often invoking tasks or scripts.",
+              "Stage|→|Job|→|Step|→|Task",
+            ],
+            [
+              "Parameters vs variables?",
+              "📐 Blueprint choice vs 🎛️ runtime setting",
+              "Parameters shape the expanded pipeline. Variables hold values used across pipeline scopes and runtime contexts.",
+              "Parameters are best for template structure and typed choices; variables are best for values that flow through execution.",
+              "📐 Parameter|→|Expanded YAML / Variable|→|Runtime",
+            ],
+            [
+              "What are templates?",
+              "🧩 Reusable LEGO blueprint",
+              "Templates reuse stages, jobs, steps, or variables and help standardize pipelines.",
+              "Templates reduce duplication and allow common security, build, and deployment logic to be maintained centrally.",
+              "Pipeline A|↘|🧩 Template|↗|Pipeline B",
+            ],
+            [
+              "Why did a pipeline not trigger?",
+              "🔕 Inspect every bell wire",
+              "Check branch and path filters, YAML version/location, UI overrides, permissions, pipeline state, and event type.",
+              "I start with the trigger definition and exact branch, then check path filters, pipeline settings overrides, repository permissions, and whether the expected event occurred.",
+              "Commit|→|Branch filter|→|Path filter|→|Pipeline",
+            ],
+          ],
+        },
+        "Agents and Secrets": {
+          icon: "👷",
+          story:
+            "Agents are factory workers. Agent pools are worker rosters. Service connections are authorized bridges. Secrets are sealed envelopes.",
+          q: [
+            [
+              "Hosted vs self-hosted agent?",
+              "🏨 Temporary worker vs 👷 permanent employee",
+              "Hosted agents are clean managed workers; self-hosted agents provide custom tools and network access but require maintenance.",
+              "I use hosted agents for low maintenance and self-hosted agents when private networking or specialized tooling is required.",
+              "Job|→|☁️ Hosted / 🏠 Self-hosted",
+            ],
+            [
+              "Why does a job remain queued?",
+              "🚧 Parcel waiting for a worker",
+              "Check parallel-job capacity, matching demands, agent health, pool permission, approvals, and service availability.",
+              "I verify whether an eligible agent is online, whether demands match capabilities, and whether concurrency or approvals are blocking execution.",
+              "Queued Job|→|Capacity?|→|Agent Match?|→|Run",
+            ],
+            [
+              "What is a service connection?",
+              "🌉 Authorized bridge",
+              "A configured identity and endpoint used by a pipeline to access Azure or another external system.",
+              "A service connection gives the pipeline controlled access to a deployment target without embedding credentials in YAML.",
+              "Pipeline|→|🌉 Connection|→|☁️ Azure",
+            ],
+            [
+              "How do you protect pipeline secrets?",
+              "🔐 Sealed envelope never shown to cameras",
+              "Use Key Vault, secret variables, least privilege, masking, safe scripts, rotation, and restricted logs and artifacts.",
+              "I never store secrets in source code. I use managed identity or federated service connections where possible and Key Vault for secret lifecycle.",
+              "🏦 Vault|→|🪪 Pipeline Identity|→|Task",
+            ],
+          ],
+        },
+        "Deployment Strategies": {
+          icon: "🎯",
+          story:
+            "Deployment strategies control how the audience moves from the old stage to the new stage.",
+          q: [
+            [
+              "Blue-green deployment?",
+              "🔵 Old stage and 🟢 new stage",
+              "Maintain two production-like environments and switch traffic after validating the new one.",
+              "Blue-green provides quick traffic switching and rollback, but requires duplicate capacity and data compatibility planning.",
+              "Users|→|🔵 Blue ⇄ 🟢 Green",
+            ],
+            [
+              "Canary deployment?",
+              "🐤 Send a small scout group first",
+              "Release to a small traffic segment, observe, then expand or stop.",
+              "Canary reduces blast radius by exposing the new version to a small percentage before wider rollout.",
+              "5% Users|→|New Version|→|Observe|→|100%",
+            ],
+            [
+              "Rolling deployment?",
+              "🛞 Replace train wheels one by one",
+              "Gradually replace instances while part of the service remains available.",
+              "Rolling deployment limits simultaneous change but requires compatibility between old and new instances during rollout.",
+              "V1 V1 V1|→|V2 V1 V1|→|V2 V2 V2",
+            ],
+            [
+              "Rollback vs roll-forward?",
+              "↩️ Return train vs 🔧 repair next station",
+              "Rollback restores a known version; roll-forward deploys a corrective version.",
+              "I choose based on availability impact, data compatibility, recovery speed, and whether reverting is safe.",
+              "Bad Release|→|↩️ Previous / 🔧 Fixed Next",
+            ],
+          ],
+        },
+        "Pipeline Support": {
+          icon: "🚨",
+          story:
+            "Troubleshooting is a hospital triage flow. First capture the exact symptom, then identify whether the patient, instrument, or environment is failing.",
+          q: [
+            [
+              "Build works locally but fails in pipeline. What do you check?",
+              "🏠 Workshop differs from 🏭 factory",
+              "Compare SDK versions, OS, environment variables, credentials, paths, casing, dependencies, and clean-build assumptions.",
+              "I compare the local and agent environments, reproduce with the same commands, and inspect the first meaningful pipeline error.",
+              "Local Env|≠|Agent Env|→|Compare",
+            ],
+            [
+              "Build passed but deployment failed. What do you check?",
+              "📦 Good product, blocked delivery",
+              "Inspect deployment logs, service connection, permissions, configuration, artifact content, network access, and target health.",
+              "A successful build proves the package was created, not that the target accepted it. I isolate authentication, configuration, network, artifact, and resource-health causes.",
+              "📦 Artifact|→|🌉 Connection|→|☁️ Target",
+            ],
+            [
+              "How do you find the pipeline root cause?",
+              "🔎 Follow the first broken domino",
+              "Capture exact error, failed task, correlation identifiers, and inputs; trace task to YAML, script, code, or configuration; separate automation and environment causes.",
+              "I do not start from the last generic failure. I identify the first meaningful failure and follow evidence through logs and source.",
+              "Log|→|First Error|→|Task|→|Code/Config",
+            ],
+            [
+              "How do you handle production deployment failure?",
+              "🚨 Stop, protect, investigate, recover",
+              "Stop progression, protect availability, collect evidence, roll back or forward-fix, validate health, communicate, and document prevention.",
+              "My first priority is blast-radius control. Then I choose the safest recovery path, validate telemetry, and complete root-cause and preventive actions.",
+              "🛑 Stop|→|🔎 Evidence|→|↩️ Recover|→|📡 Validate",
+            ],
+            [
+              "How do you troubleshoot failing E2E tests?",
+              "🩺 Patient, instrument, or hospital?",
+              "Separate product defects, automation defects, test data/configuration, dependency failures, capacity issues, and environment instability.",
+              "I capture the failing step and assertion, correlate logs, reproduce narrowly, and avoid weakening assertions merely to obtain a green run.",
+              "Test Failure|→|Code?|Automation?|Data?|Environment?",
+            ],
+          ],
+        },
+      };
+      let selected = "All Topics",
+        query = "",
+        expanded = false;
+      const collapsedSections = new Set();
+      const names = Object.keys(DATA),
+        pool = names.flatMap((n) => DATA[n].q),
+        nav = document.getElementById("nav"),
+        content = document.getElementById("content");
+      count.textContent = pool.length + " visual question cards";
+      function diagram(s) {
+        return s
+          .split("|")
+          .map((x, i) =>
+            i % 2 ? "<i>" + x + "</i>" : "<span>" + x + "</span>",
+          )
+          .join("");
+      }
+      function makeNav() {
+        nav.innerHTML = "";
+        ["All Topics", ...names].forEach((n) => {
+          const b = document.createElement("button");
+          b.textContent = n === "All Topics" ? n : DATA[n].icon + " " + n;
+          b.className = n === selected ? "active" : "";
+          b.onclick = () => {
+            selected = n;
+            makeNav();
+            render();
+          };
+          nav.appendChild(b);
+        });
+      }
+      function render() {
+        content.innerHTML = "";
+        names
+          .filter((n) => selected === "All Topics" || n === selected)
+          .forEach((n) => {
+            const d = DATA[n],
+              qs = d.q.filter((x) => x.join(" ").toLowerCase().includes(query));
+            if (!qs.length) return;
+            const s = document.createElement("section");
+            s.innerHTML =
+              '<div class="sectionHead"><div><h2>' +
+              d.icon +
+              " " +
+              n +
+              '</h2><div class="story">' +
+              d.story +
+              '</div></div><button class="subjectToggle" type="button" aria-controls="subject-' +
+              names.indexOf(n) +
+              '-cards"></button></div><div class="grid"></div>';
+            const grid = s.querySelector(".grid");
+            const toggle = s.querySelector(".subjectToggle");
+            const updateSubjectToggle = () => {
+              const isExpanded = !collapsedSections.has(n);
+              grid.hidden = !isExpanded;
+              toggle.textContent = isExpanded ? "Hide" : "Show";
+              toggle.setAttribute("aria-expanded", String(isExpanded));
+              toggle.setAttribute(
+                "aria-label",
+                (isExpanded ? "Hide " : "Show ") + n + " cards",
+              );
+            };
+            grid.id = "subject-" + names.indexOf(n) + "-cards";
+            toggle.onclick = () => {
+              if (collapsedSections.has(n)) collapsedSections.delete(n);
+              else collapsedSections.add(n);
+              updateSubjectToggle();
+            };
+            updateSubjectToggle();
+            qs.forEach((x) => {
+              const c = document.createElement("article");
+              c.className = "card" + (expanded ? " open" : "");
+              c.innerHTML =
+                '<div class="question"><h3>' +
+                x[0] +
+                '</h3><div class="memory">Memory: ' +
+                x[1] +
+                '</div><div class="diagram">' +
+                diagram(x[4]) +
+                '</div></div><div class="answer"><strong>Easy answer:</strong> ' +
+                x[2] +
+                '<div class="say"><strong>Say in the interview:</strong> ' +
+                x[3] +
+                "</div></div>";
+              c.querySelector(".question").onclick = () =>
+                c.classList.toggle("open");
+              s.querySelector(".grid").appendChild(c);
+            });
+            content.appendChild(s);
+          });
+      }
+      search.oninput = (e) => {
+        query = e.target.value.toLowerCase();
+        render();
+      };
+      expand.onclick = () => {
+        expanded = !expanded;
+        expand.textContent = expanded ? "Collapse All" : "Expand All";
+        render();
+      };
+      let current;
+      function pick() {
+        current = pool[Math.floor(Math.random() * pool.length)];
+        rq.textContent = current[0];
+        rd.innerHTML = diagram(current[4]);
+        ra.innerHTML =
+          '<div class="oneLine"><strong>One-line answer:</strong> ' +
+          current[2] +
+          '</div><div class="say"><strong>Say in the interview:</strong> ' +
+          current[3] +
+          "</div>";
+        ra.style.display = "none";
+      }
+      random.onclick = () => {
+        pick();
+        recall.classList.add("show");
+      };
+      reveal.onclick = () => (ra.style.display = "block");
+      next.onclick = pick;
+      close.onclick = () => recall.classList.remove("show");
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") recall.classList.remove("show");
+      });
+      makeNav();
+      render();
+    </script>
+    <script src="app-protection.js" defer></script>
+  </body>
+</html>

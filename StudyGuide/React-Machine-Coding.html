@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Practice React machine-coding interviews: 10 free challenges and a larger Pro question bank." />
+  <title>React Machine Coding Interview Practice | KR7Tech</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f3f6f2;
+      --ink: #182823;
+      --muted: #61716a;
+      --line: #d9e3dc;
+      --green: #176b59;
+      --blue: #245fa0;
+      --surface: #fff;
+      --shadow: 0 8px 24px rgba(27, 56, 45, .07);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Segoe UI", Arial, sans-serif; line-height: 1.6; }
+    a { color: var(--green); }
+    .appbar { position: sticky; z-index: 2; top: 0; display: flex; min-height: 58px; align-items: center; justify-content: space-between; gap: 12px; padding: 9px max(18px, calc((100vw - 1200px) / 2)); border-bottom: 1px solid rgba(217,227,220,.9); background: rgba(248,250,247,.94); backdrop-filter: blur(14px); }
+    .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 850; text-decoration: none; }
+    .brand-mark { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 10px; background: #193b36; color: #fff; font-size: .78rem; }
+    .appbar nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+    .appbar nav a { padding: 8px 11px; border-radius: 9px; color: #c2c8d5; font-size: .82rem; font-weight: 700; text-decoration: none; }
+    .appbar nav a:hover, .appbar nav a:focus-visible { background: #303449; color: #fff; outline: none; }
+    .appbar nav a.sign-in { border-radius: 999px; background: #159d61; color: #fff; padding-inline: 15px; }
+    main { width: min(1200px, calc(100% - 32px)); margin: 24px auto 60px; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; padding: clamp(24px, 5vw, 42px); border-radius: 20px; background: linear-gradient(130deg, #173b34, #176b59 58%, #398d68); color: #fff; box-shadow: var(--shadow); }
+    .eyebrow { margin: 0 0 8px; color: #d4f2df; font-size: .78rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.08; }
+    .hero p:last-child { max-width: 760px; margin: 14px 0 0; color: #e7f5eb; }
+    .hero-stat { display: grid; min-width: 120px; justify-items: center; padding: 13px 18px; border: 1px solid rgba(255,255,255,.28); border-radius: 14px; background: rgba(255,255,255,.1); }
+    .hero-stat strong { font-size: 1.7rem; }
+    .hero-stat span { color: #e7f5eb; font-size: .8rem; }
+    .access-note { margin: 17px 0; padding: 12px 15px; border: 1px solid #e8dfc7; border-radius: 11px; background: #fff8e9; color: #5c4c2b; }
+    .layout { display: grid; grid-template-columns: 290px minmax(0,1fr); gap: 16px; align-items: start; margin-top: 18px; }
+    .sidebar, .workspace { border: 1px solid var(--line); border-radius: 15px; background: var(--surface); box-shadow: var(--shadow); }
+    .sidebar { position: sticky; top: 76px; overflow: hidden; }
+    .side-head, .work-head { padding: 15px 17px; border-bottom: 1px solid #e7ede8; }
+    .side-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+    .side-head strong, .work-head strong { font-size: .94rem; }
+    .side-head span { color: var(--muted); font-size: .78rem; }
+    .question-list { display: grid; max-height: min(68vh, 690px); overflow: auto; padding: 7px; }
+    .question-button { display: grid; grid-template-columns: 31px minmax(0,1fr) auto; gap: 9px; align-items: center; width: 100%; padding: 9px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+    .question-button:hover { background: #f6faf7; }
+    .question-button[aria-current="true"] { border-color: #b7d4c5; background: #eff7f1; }
+    .question-button .number { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 8px; background: #e6f5ed; color: var(--green); font-size: .75rem; font-weight: 850; }
+    .question-button.locked .number { background: #f2f0eb; color: #806b43; }
+    .question-button.locked .title { filter: blur(8px); user-select: none; }
+    .question-button .title { font-size: .82rem; font-weight: 750; line-height: 1.35; }
+    .question-button .lock { font-size: .77rem; }
+    .work-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+    .work-overline { color: var(--muted); font-size: .76rem; font-weight: 750; }
+    .workspace-content { min-height: 430px; padding: clamp(18px, 3vw, 30px); }
+    .question-title { margin: 3px 0 10px; color: var(--ink); font-size: clamp(1.35rem, 3vw, 2rem); line-height: 1.2; }
+    .question-meta { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0 18px; }
+    .tag { padding: 4px 9px; border-radius: 999px; background: #eaf3ff; color: var(--blue); font-size: .74rem; font-weight: 800; }
+    .tag.free { background: #e6f5ed; color: var(--green); }
+    .prompt { padding: 16px 18px; border: 1px solid #e5ece7; border-radius: 12px; background: #f9fbf9; }
+    .prompt h3, .answer h3 { margin: 0 0 8px; font-size: .98rem; }
+    .prompt p, .answer p { margin: 8px 0; }
+    .answer { margin-top: 15px; padding: 16px 18px; border-left: 4px solid var(--green); border-radius: 8px; background: #eff7f1; }
+    .example { margin-top: 12px; padding-top: 12px; border-top: 1px solid #dce9df; color: #42564a; }
+    .locked-state { max-width: 620px; margin: 36px auto; padding: 30px; border: 1px solid #dce8df; border-radius: 16px; background: linear-gradient(145deg,#fbfffc,#eef7f1); text-align: center; }
+    .locked-icon { font-size: 2rem; }
+    .locked-state h2 { margin: 7px 0; color: var(--green); }
+    .locked-state p { color: var(--muted); }
+    .primary-link { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; padding: 9px 16px; border-radius: 9px; background: var(--green); color: #fff; font-weight: 800; text-decoration: none; }
+    button.primary-link { border: 0; font: inherit; font-weight: 800; cursor: pointer; }
+    .status { min-height: 24px; margin: 14px 0 0; color: var(--muted); font-size: .88rem; }
+    footer { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: .86rem; }
+    @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } .sidebar { position: static; } .question-list { grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); max-height: 340px; } }
+    @media (max-width: 540px) { main { width: min(100% - 20px, 1200px); margin-top: 12px; } .appbar { align-items: flex-start; flex-direction: column; padding: 8px 12px; } .hero { grid-template-columns: 1fr; } .hero-stat { grid-template-columns: auto auto; justify-content: center; gap: 10px; } .hero-stat strong { font-size: 1.25rem; } .question-list { grid-template-columns: 1fr; } .appbar nav { justify-content: flex-start; gap: 1px; } .appbar nav a { padding: 7px 8px; font-size: .75rem; } }
+  </style>
+</head>
+<body>
+  <header class="appbar">
+    <a class="brand" href="index.html"><span class="brand-mark">UI</span><span>KR7Tech</span></a>
+    <nav aria-label="Main navigation"><a href="index.html#interview-qa">Interview Q&amp;A</a><a href="index.html#topics">Topics</a><a href="index.html#training">Training</a><a href="AI-Interview.html">AI Interview</a><a href="index.html#leaderboard">Leaderboard</a><a href="index.html#help">Help</a><a class="sign-in" href="Company-Interviews.html#access-heading">Sign in</a></nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div><p class="eyebrow">React · Machine Coding</p><h1>Build it. Explain it. Ship it.</h1><p>Practice realistic React interview exercises with clear requirements, implementation decisions, accessibility, edge cases, and test scenarios. Ten challenges are free; the complete bank is available with Pro.</p></div>
+      <div class="hero-stat"><strong id="free-count">10</strong><span>free challenges</span></div>
+    </section>
+    <p class="access-note"><strong>Free preview:</strong> The first 10 challenges and their implementation guides are available without Pro. Remaining questions are blurred and their titles, requirements, and solutions are delivered only to Pro members.</p>
+    <section class="layout" aria-label="React interview practice">
+      <aside class="sidebar" aria-label="Question navigator">
+        <div class="side-head"><strong>Question bank</strong><span id="question-count">Loading…</span></div>
+        <div id="question-list" class="question-list"></div>
+      </aside>
+      <article id="workspace" class="workspace" aria-live="polite">
+        <div class="work-head"><strong>Selected challenge</strong><span class="work-overline">React Machine Coding</span></div>
+        <div id="workspace-content" class="workspace-content"><p class="status">Loading the question bank…</p></div>
+      </article>
+    </section>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <footer>Challenge prompts and guidance are original practice material, not guaranteed interview questions. <a href="Company-Interviews.html#access-heading">Sign in or learn about Pro access</a>.</footer>
+  </main>
+  <script src="local-pro-access.js" defer></script>
+  <script>
+    (() => {
+      const list = document.getElementById("question-list");
+      const content = document.getElementById("workspace-content");
+      const status = document.getElementById("status");
+      const lockedIds = new Set();
+      let questions = [];
+      let selectedId = null;
+      let isPro = false;
+
+      function element(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+      }
+
+      function showQuestion(question) {
+        selectedId = question.id;
+        list.querySelectorAll("button").forEach(button => {
+          button.setAttribute("aria-current", String(button.dataset.id === selectedId));
+        });
+        const header = document.querySelector(".work-head");
+        header.querySelector(".work-overline").textContent = `Question ${String(questions.findIndex(item => item.id === question.id) + 1).padStart(2, "0")} · React Machine Coding`;
+        content.replaceChildren();
+        content.append(element("h2", "question-title", question.question));
+        const tags = element("div", "question-meta");
+        tags.append(element("span", "tag free", isPro ? "PRO LIBRARY" : "FREE PREVIEW"));
+        tags.append(element("span", "tag", "React"));
+        tags.append(element("span", "tag", "Machine coding"));
+        content.append(tags);
+        const prompt = element("section", "prompt");
+        prompt.append(element("h3", "", "Challenge"));
+        prompt.append(element("p", "", question.question));
+        content.append(prompt);
+        const answer = element("section", "answer");
+        answer.append(element("h3", "", "Solution approach"));
+        question.answer.split(/\n+/).filter(Boolean).forEach(line => answer.append(element("p", "", line)));
+        const example = element("div", "example");
+        const exampleLabel = element("strong", "", "Acceptance checks: ");
+        example.append(exampleLabel, document.createTextNode(question.example));
+        answer.append(example);
+        content.append(answer);
+      }
+
+      function showLocked(question) {
+        selectedId = question.id;
+        list.querySelectorAll("button").forEach(button => {
+          button.setAttribute("aria-current", String(button.dataset.id === selectedId));
+        });
+        const header = document.querySelector(".work-head");
+        header.querySelector(".work-overline").textContent = "Pro challenge";
+        const box = element("div", "locked-state");
+        box.append(element("div", "locked-icon", "🔒"));
+        box.append(element("h2", "", "Unlock the full challenge"));
+        box.append(element("p", "", "This Pro challenge is locked. Its title and requirements are hidden."));
+        box.append(element("p", "", "This challenge’s requirements and solution guide are protected and are not sent to your browser without Pro access."));
+        const link = element("a", "primary-link", isPro ? "Refresh access" : "Sign in / Upgrade to Pro");
+        link.href = isPro ? "React-Machine-Coding.html" : "Company-Interviews.html#access-heading";
+        box.append(link);
+        if (!isPro) {
+          const unlock = element("button", "primary-link", "Unlock Pro");
+          unlock.type = "button";
+          unlock.dataset.localProUnlock = "";
+          unlock.hidden = true;
+          box.append(unlock);
+        }
+        content.replaceChildren(box);
+      }
+
+      function renderList() {
+        const items = [...questions, ...[...lockedIds].map(id => ({ id, locked: true }))];
+        list.replaceChildren();
+        items.forEach((question, index) => {
+          const button = element("button", `question-button${question.locked ? " locked" : ""}`);
+          button.type = "button";
+          button.dataset.id = question.id;
+          button.setAttribute("aria-current", String(question.id === selectedId));
+          button.append(element("span", "number", String(index + 1).padStart(2, "0")));
+          button.append(element("span", "title", question.locked ? "Pro question · unlock to view" : question.question));
+          if (question.locked) button.append(element("span", "lock", "🔒"));
+          button.addEventListener("click", () => question.locked ? showLocked(question) : showQuestion(question));
+          list.append(button);
+        });
+        document.getElementById("question-count").textContent = `${questions.length} available · ${items.length} total`;
+      }
+
+      async function loadQuestions() {
+        try {
+          const response = await fetch("/api/react-machine-coding", { credentials: "same-origin" });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || `Could not load questions (${response.status}).`);
+          questions = data.questions;
+          lockedIds.clear();
+          (data.locked || []).forEach(item => lockedIds.add(item.id));
+          isPro = data.access?.premium === true;
+          document.getElementById("free-count").textContent = data.freeCount;
+          renderList();
+          if (questions.length) showQuestion(questions[0]);
+          else {
+            content.replaceChildren(element("p", "status", "No free questions are available yet. Please try again later."));
+          }
+          status.textContent = isPro
+            ? "Pro active: the complete React machine-coding question bank is unlocked."
+            : `${questions.length} free challenges are available. Sign in and unlock Pro to view the remaining ${lockedIds.size}.`;
+        } catch (error) {
+          content.replaceChildren(element("p", "status", error.message || "Could not load the question bank."));
+          status.textContent = "Question service is temporarily unavailable.";
+        }
+      }
+
+      loadQuestions();
+    })();
+  </script>
+</body>
+</html>
