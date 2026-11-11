@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRM Omnichannel | Microservices &amp; Retail LLD</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --primary: #0d6efd;
+      --primary-dark: #0a4db7;
+      --text: #1c2a39;
+      --muted: #5d7285;
+      --border: #dfe7f1;
+      --success: #1ea97c;
+      --warning: #f0b429;
+      --danger: #d94b5c;
+      --shadow: 0 8px 24px rgba(26, 52, 84, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0d6efd, #0a4db7);
+      color: white;
+      padding: 28px 30px;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2.3rem;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 1.05rem;
+      opacity: 0.92;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: var(--primary-dark);
+    }
+
+    .pill {
+      display: inline-block;
+      background: #e8f1ff;
+      color: var(--primary-dark);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .languages {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .languages li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #edf2f8;
+    }
+
+    .languages li:last-child {
+      border-bottom: none;
+    }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #edf2f8;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #0d6efd, #4ea1ff);
+      border-radius: inherit;
+    }
+
+    .section-title {
+      margin: 26px 0 14px;
+      color: var(--primary-dark);
+      font-size: 1.7rem;
+    }
+
+    .flow {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .flow-boxes {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .box {
+      min-width: 170px;
+      background: #eef5ff;
+      border: 1px solid #cfe0ff;
+      padding: 14px 16px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .arrow {
+      font-size: 1.6rem;
+      color: var(--primary);
+      margin: 0 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f1f6ff;
+      color: var(--primary-dark);
+      font-size: 0.96rem;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pattern-list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .pattern-list li {
+      margin: 8px 0;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #eafaf4;
+      color: #127d5d;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    .guide-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 24px;
+    }
+
+    .guide-nav a {
+      padding: 8px 13px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: white;
+      color: var(--primary-dark);
+      font-size: 0.9rem;
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .guide-nav a:hover,
+    .guide-nav a:focus-visible {
+      border-color: var(--primary);
+      outline: 2px solid transparent;
+    }
+
+    .section-intro {
+      max-width: 850px;
+      margin: -4px 0 16px;
+      color: var(--muted);
+    }
+
+    .diagram {
+      overflow-x: auto;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .diagram-track {
+      display: flex;
+      min-width: 760px;
+      align-items: stretch;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .diagram-node {
+      display: flex;
+      min-width: 132px;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      padding: 13px;
+      border: 1px solid #cfe0ff;
+      border-radius: 12px;
+      background: #eef5ff;
+      color: var(--primary-dark);
+      text-align: center;
+    }
+
+    .diagram-node strong {
+      font-size: 0.95rem;
+    }
+
+    .diagram-node span {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+
+    .diagram-node.accent {
+      border-color: #f2c7a6;
+      background: #fff4e9;
+      color: #8b451d;
+    }
+
+    .diagram-arrow {
+      align-self: center;
+      color: var(--primary);
+      font-size: 1.45rem;
+      font-weight: 700;
+    }
+
+    .event-lane {
+      margin-top: 14px;
+      padding: 12px 15px;
+      border: 1px dashed #9eb3cb;
+      border-radius: 12px;
+      background: #f7faff;
+      color: var(--text);
+    }
+
+    .event-lane strong {
+      color: var(--primary-dark);
+    }
+
+    .pattern-grid,
+    .lld-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 14px;
+    }
+
+    .pattern-card,
+    .lld-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .pattern-card h3,
+    .lld-card h3 {
+      margin: 0 0 8px;
+      color: var(--primary-dark);
+      font-size: 1.05rem;
+    }
+
+    .pattern-card p,
+    .lld-card p {
+      margin: 7px 0;
+    }
+
+    .pattern-card .label,
+    .lld-card .label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.035em;
+    }
+
+    .callout {
+      margin: 14px 0;
+      padding: 14px 16px;
+      border-left: 4px solid var(--warning);
+      border-radius: 8px;
+      background: #fff9e9;
+    }
+
+    .callout strong {
+      color: #805b00;
+    }
+
+    .code-flow {
+      overflow-x: auto;
+      padding: 16px;
+      border-radius: 12px;
+      background: #142334;
+      color: #eef5ff;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      white-space: pre;
+    }
+
+    .state-list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .state {
+      padding: 8px 11px;
+      border: 1px solid #cfe0ff;
+      border-radius: 10px;
+      background: #eef5ff;
+      color: var(--primary-dark);
+      font-weight: 650;
+    }
+
+    .state-arrow {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 16px;
+    }
+
+    .table-wrap table {
+      min-width: 680px;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 767px) {
+      h1 { font-size: 1.8rem; }
+      .box { min-width: 130px; }
+      .diagram { padding: 12px; }
+      .pattern-grid,
+      .lld-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>CRM.Omnichannel</h1>
+      <p class="subtitle">
+        Dynamics 365 Contact Center / Omnichannel platform, plus practical microservice patterns and a deep retail low-level design walkthrough.
+      </p>
+    </header>
+
+    <nav class="guide-nav" aria-label="Guide sections">
+      <a href="#microservice-patterns">Microservices &amp; patterns</a>
+      <a href="#amazon-lld">Retail LLD: Amazon-scale shop</a>
+      <a href="Amazon-Design.html">Complete marketplace HLD + LLD →</a>
+    </nav>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Project Summary</h2>
+        <div class="pill">Microsoft</div>
+        <div class="pill">Azure</div>
+        <div class="pill">Microservices</div>
+        <div class="pill">C#</div>
+        <p>
+          CRM.Omnichannel is a large enterprise-grade customer service platform that unifies customer communication
+          across multiple channels into a single agent experience.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Language Composition</h2>
+        <ul class="languages">
+          <li><span>C#</span><strong>64.3%</strong></li>
+          <li><span>TypeScript</span><strong>10.4%</strong></li>
+          <li><span>TSQL</span><strong>9.2%</strong></li>
+          <li><span>Python</span><strong>6.7%</strong></li>
+          <li><span>Gherkin</span><strong>2.7%</strong></li>
+          <li><span>PowerShell</span><strong>1.8%</strong></li>
+          <li><span>Other</span><strong>4.9%</strong></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Core Characteristics</h2>
+        <p><span class="badge">Scalable</span> <span class="badge">Reliable</span></p>
+        <p><span class="badge">Cloud-native</span> <span class="badge">Multi-channel</span></p>
+        <p><span class="badge">High availability</span></p>
+        <p>Built for large enterprise workloads, tenant isolation, routing efficiency, and fast response times.</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Architecture at a Glance</h2>
+    <div class="flow">
+      <div class="flow-boxes">
+        <div class="box">Customer Contact</div>
+        <div class="arrow">→</div>
+        <div class="box">Channel Connector</div>
+        <div class="arrow">→</div>
+        <div class="box">Messaging / Voice Runtime</div>
+        <div class="arrow">→</div>
+        <div class="box">Assignment Engine</div>
+        <div class="arrow">→</div>
+        <div class="box">AgentBackbone</div>
+        <div class="arrow">→</div>
+        <div class="box">Agent Workspace</div>
+      </div>
+      <p style="margin-top: 18px;">
+        A customer interaction enters through a channel connector, gets processed by the runtime services,
+        is intelligently routed based on skill, availability, and priority, and is delivered to the right agent in real time.
+      </p>
+    </div>
+
+    <h2 class="section-title">Microservice Structure</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>MessagingRuntime</td>
+          <td>Handles chat, SMS, social, and digital conversations.</td>
+        </tr>
+        <tr>
+          <td>TelephonyRuntime</td>
+          <td>Manages voice and telephony channels, call routing, and media workflows.</td>
+        </tr>
+        <tr>
+          <td>AgentBackbone</td>
+          <td>Provides notifications, state synchronization, background jobs, and agent experience support.</td>
+        </tr>
+        <tr>
+          <td>AssignmentEngineVNext</td>
+          <td>Routes work items to the best-fit agent based on skills, queues, and availability.</td>
+        </tr>
+        <tr>
+          <td>ProactiveEngagement</td>
+          <td>Supports outbound engagement and customer contact campaigns.</td>
+        </tr>
+        <tr>
+          <td>ConversationToQueue</td>
+          <td>Routes conversations and records into the correct queue.</td>
+        </tr>
+        <tr>
+          <td>OCProvisioning</td>
+          <td>Handles environment setup, configuration, and platform provisioning.</td>
+        </tr>
+        <tr>
+          <td>Sporch</td>
+          <td>Provides orchestration and process coordination between services.</td>
+        </tr>
+        <tr>
+          <td>MARCHServer</td>
+          <td>Supports managed or regulated communication flows and specialized scenarios.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">Architecture Style</h2>
+    <div class="grid">
+      <div class="card">
+        <h2>Microservices</h2>
+        <p>
+          Each business capability runs as an independent service with clear boundaries, deployment autonomy, and separate scaling.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Event-Driven</h2>
+        <p>
+          Services communicate through asynchronous events and messaging using Azure Service Bus, topics, and event streams.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Layered</h2>
+        <p>
+          Each microservice follows layered patterns such as API, business logic, domain processing, and infrastructure integration.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Cloud Native</h2>
+        <p>
+          The platform is designed for Azure, high availability, fault isolation, traffic sharding, and elastic scaling.
+        </p>
+      </div>
+    </div>
+
+    <section id="microservice-patterns" aria-labelledby="microservice-patterns-title">
+      <h2 class="section-title" id="microservice-patterns-title">Microservices in Practice: E-commerce Patterns</h2>
+      <p class="section-intro">
+        Follow one shopper from browsing to delivery. Each service owns a business capability and its data;
+        synchronous calls serve immediate decisions, while events carry completed facts to other services.
+      </p>
+
+      <div class="diagram" role="group" aria-label="E-commerce microservice request and event flow">
+        <div class="diagram-track">
+          <div class="diagram-node"><strong>Shopper</strong><span>Web or mobile app</span></div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="diagram-node"><strong>API Gateway</strong><span>Auth, routing, limits</span></div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="diagram-node"><strong>Catalog &amp; Cart</strong><span>Browse and prepare basket</span></div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="diagram-node accent"><strong>Checkout / Order</strong><span>Coordinates the purchase</span></div>
+        </div>
+        <div class="diagram-track" style="margin-top: 12px;">
+          <div class="diagram-node"><strong>Inventory</strong><span>Reserve stock</span></div>
+          <span class="diagram-arrow" aria-hidden="true">↔</span>
+          <div class="diagram-node"><strong>Payment</strong><span>Authorize / capture</span></div>
+          <span class="diagram-arrow" aria-hidden="true">↔</span>
+          <div class="diagram-node"><strong>Fulfillment</strong><span>Pick, pack, ship</span></div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="diagram-node"><strong>Notifications</strong><span>Email, SMS, push</span></div>
+        </div>
+        <div class="event-lane">
+          <strong>Event bus:</strong> <code>CheckoutStarted</code> → <code>InventoryReserved</code> →
+          <code>PaymentAuthorized</code> → <code>OrderConfirmed</code> → <code>ShipmentCreated</code>. Consumers process events independently;
+          a shopper receives a fast response without waiting for every downstream task.
+        </div>
+      </div>
+
+      <h3 class="section-title">Patterns explained through the same checkout</h3>
+      <div class="pattern-grid">
+        <article class="pattern-card">
+          <h3>1. API Gateway / Backend for Frontend</h3>
+          <p class="label">What it solves</p>
+          <p>One secure client entry point, with a tailored API for each user experience when needed.</p>
+          <p class="label">In the shop</p>
+          <p>The app calls <code>POST /checkout</code>; the gateway validates the token, applies rate limits, and routes to Checkout. A mobile BFF can return a smaller response than a web BFF.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>2. Database per service</h3>
+          <p class="label">What it solves</p>
+          <p>Service autonomy and ownership of business rules and persisted data.</p>
+          <p class="label">In the shop</p>
+          <p>Inventory owns stock; Payment owns payment records. Other services use APIs or events, not direct SQL into another service's tables.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>3. Event-driven / Publish-subscribe</h3>
+          <p class="label">What it solves</p>
+          <p>Decouples work that does not need to finish before the current request returns.</p>
+          <p class="label">In the shop</p>
+          <p>After an order is accepted, subscribers update analytics, send a receipt, and start fulfillment from <code>OrderPlaced</code>.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>4. Saga</h3>
+          <p class="label">What it solves</p>
+          <p>A multi-service business transaction without a distributed database transaction.</p>
+          <p class="label">In the shop</p>
+          <p>Reserve stock → authorize payment → confirm order. If payment fails, release the reservation; if stock fails, do not capture payment. Each compensation is an explicit business action.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>5. Transactional Outbox</h3>
+          <p class="label">What it solves</p>
+          <p>Prevents a database update succeeding while its event is lost (or an event being published for a rolled-back update).</p>
+          <p class="label">In the shop</p>
+          <p>Order Service commits the order and an outbox row in one local transaction. A publisher retries delivery; consumers deduplicate because delivery is typically at least once.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>6. CQRS</h3>
+          <p class="label">What it solves</p>
+          <p>Lets write rules and high-volume read models evolve independently where workload justifies it.</p>
+          <p class="label">In the shop</p>
+          <p>Checkout writes an order to its authoritative store; a read projection serves the order-history screen. The projection may lag briefly, so the UI handles eventual consistency.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>7. Event sourcing</h3>
+          <p class="label">What it solves</p>
+          <p>Stores an append-only sequence of domain events as the source of truth when audit and historical reconstruction justify the complexity.</p>
+          <p class="label">In the shop</p>
+          <p>An order stream could record <code>OrderCreated</code>, <code>InventoryReserved</code>, and <code>OrderConfirmed</code>. It is not required just because the system publishes integration events.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>8. Cache-aside</h3>
+          <p class="label">What it solves</p>
+          <p>Reduces repeated reads and latency for data that can tolerate a freshness window.</p>
+          <p class="label">In the shop</p>
+          <p>Catalog reads check a cache first and load from the catalog store on a miss. Use short TTLs or invalidation for price changes; never trust a cached stock count as the final reservation.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>9. Retry with backoff and jitter</h3>
+          <p class="label">What it solves</p>
+          <p>Recovers from transient timeouts without retry storms.</p>
+          <p class="label">In the shop</p>
+          <p>Retry a timed-out inventory request with bounded exponential backoff and jitter only when the operation is safe to repeat (or has an idempotency key).</p>
+        </article>
+        <article class="pattern-card">
+          <h3>10. Circuit breaker</h3>
+          <p class="label">What it solves</p>
+          <p>Stops repeatedly calling a failing dependency and gives it time to recover.</p>
+          <p class="label">In the shop</p>
+          <p>If the recommendation service is down, open the breaker and render the product page without recommendations instead of delaying checkout.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>11. Bulkhead and timeout</h3>
+          <p class="label">What it solves</p>
+          <p>Limits resource exhaustion and prevents one slow dependency consuming all request capacity.</p>
+          <p class="label">In the shop</p>
+          <p>Give recommendations a separate connection pool and short deadline. Checkout retains its own capacity when recommendations are slow.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>12. Idempotency</h3>
+          <p class="label">What it solves</p>
+          <p>Makes a repeated request safe when a client retries after a timeout or loses the response.</p>
+          <p class="label">In the shop</p>
+          <p>The client sends an idempotency key with checkout. The service stores the key and result so a retry returns the same order instead of charging twice.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>13. State machine</h3>
+          <p class="label">What it solves</p>
+          <p>Defines valid state transitions and rejects impossible or duplicate actions.</p>
+          <p class="label">In the shop</p>
+          <p>An order can move from <code>PENDING_PAYMENT</code> to <code>CONFIRMED</code> or <code>CANCELLED</code>; it cannot move from <code>SHIPPED</code> back to <code>PAYMENT_PENDING</code>.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>14. Dead-letter queue</h3>
+          <p class="label">What it solves</p>
+          <p>Isolates messages that still fail after bounded retries for inspection and safe replay.</p>
+          <p class="label">In the shop</p>
+          <p>A malformed shipment event is moved to a DLQ with diagnostics and an alert; operators fix the cause and replay it with duplicate protection.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>15. Strategy, Factory, Builder, Repository</h3>
+          <p class="label">What they solve</p>
+          <p>Keep variation, object construction, and persistence details out of core business decisions.</p>
+          <p class="label">In the shop</p>
+          <p>A shipping strategy chooses a carrier by destination and promise; a factory creates the right carrier adapter; a builder assembles a complex shipment request; a repository persists the order aggregate behind a domain-facing interface.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>16. Service discovery and observability</h3>
+          <p class="label">What they solve</p>
+          <p>Finds healthy service instances and makes cross-service behavior diagnosable.</p>
+          <p class="label">In the shop</p>
+          <p>Runtime routing targets healthy Inventory instances. A trace ID follows checkout across services; metrics track latency, errors, queue lag, and reservation failures.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>17. Strangler Fig and anti-corruption layer</h3>
+          <p class="label">What they solve</p>
+          <p>Replace a legacy system incrementally while keeping its data model from leaking into new domain code.</p>
+          <p class="label">In the shop</p>
+          <p>Route new checkout flows to Order Service while legacy order history remains available. An adapter translates the old order format into the new contract.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>18. Sidecar / Ambassador</h3>
+          <p class="label">What they solve</p>
+          <p>Moves cross-cutting network or runtime concerns alongside an application or into a dedicated proxy.</p>
+          <p class="label">In the shop</p>
+          <p>A sidecar can export telemetry or enforce service-mesh policy; an outbound proxy can centralize controlled calls to a payment provider. Use only when platform operations benefit.</p>
+        </article>
+        <article class="pattern-card">
+          <h3>19. API Composition</h3>
+          <p class="label">What it solves</p>
+          <p>Builds a client-facing view by querying multiple service-owned read models.</p>
+          <p class="label">In the shop</p>
+          <p>An order-details endpoint combines order and shipment summaries. Set deadlines and partial-response behavior so one optional dependency does not stall the whole page.</p>
+        </article>
+      </div>
+
+      <div class="callout">
+        <strong>Choose patterns for a reason:</strong> a monolith may be simpler for an early product.
+        Add a separate service or an event-driven projection when independent ownership, scale, release cadence,
+        or failure isolation pays for the operational cost.
+      </div>
+    </section>
+
+    <section id="amazon-lld" aria-labelledby="amazon-lld-title">
+      <h2 class="section-title" id="amazon-lld-title">Low-Level Design: Amazon-Scale Retail Store</h2>
+      <p class="section-intro">
+        An interview-ready, illustrative design for a large online marketplace: catalog, cart, checkout,
+        inventory reservation, payment, order tracking, and fulfillment. This is a teaching example, not a
+        description of Amazon's proprietary internal architecture.
+      </p>
+
+      <div class="callout">
+        <strong>Scope and assumptions:</strong> customers browse products, add offers to a cart, place an order,
+        pay, and track delivery. A marketplace offer is seller + product + price + availability. The design
+        prioritizes no duplicate charges, no overselling beyond configured policy, fast reads, and eventual
+        consistency for non-critical views.
+      </div>
+
+      <h3 class="section-title">System boundary and request path</h3>
+      <div class="diagram" role="group" aria-label="Retail system services and external integrations">
+        <div class="diagram-track">
+          <div class="diagram-node"><strong>Web / Mobile</strong><span>Customer clients</span></div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="diagram-node"><strong>Edge + API Gateway</strong><span>TLS, auth, throttling</span></div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="diagram-node"><strong>Catalog · Search · Cart</strong><span>Browse and prepare</span></div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="diagram-node accent"><strong>Checkout / Order</strong><span>Order saga coordinator</span></div>
+        </div>
+        <div class="diagram-track" style="margin-top: 12px;">
+          <div class="diagram-node"><strong>Inventory</strong><span>Stock ledger + reservations</span></div>
+          <span class="diagram-arrow" aria-hidden="true">↔</span>
+          <div class="diagram-node"><strong>Payment</strong><span>Provider adapter + ledger</span></div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="diagram-node"><strong>Fulfillment</strong><span>Warehouse + shipment</span></div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="diagram-node"><strong>Delivery updates</strong><span>Events + notifications</span></div>
+        </div>
+        <div class="event-lane">
+          <strong>Supporting components:</strong> event broker + transactional outbox · search index · cache ·
+          object storage for images · SQL stores owned by transactional services · metrics, logs, and distributed tracing.
+        </div>
+      </div>
+
+      <h3 class="section-title">Service ownership and responsibilities</h3>
+      <div class="lld-grid">
+        <article class="lld-card">
+          <h3>Catalog Service</h3>
+          <p>Owns product titles, descriptions, attributes, and media references. Publishes product changes to search indexing.</p>
+          <p><strong>Does not own:</strong> order-time price snapshots or available-to-sell stock.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Search Service</h3>
+          <p>Serves text search, facets, and ranking from a denormalized index. Index updates are asynchronous.</p>
+          <p><strong>Trade-off:</strong> search can lag catalog edits; product detail reads the authoritative catalog.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Cart Service</h3>
+          <p>Stores customer cart lines, selected offer, quantity, and an optimistic version. Revalidates price and availability at checkout.</p>
+          <p><strong>Storage:</strong> partition by customer/cart ID with a TTL for abandoned carts.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Checkout / Order Service</h3>
+          <p>Validates the request, snapshots item/offer/price/address, creates the order, and coordinates saga steps.</p>
+          <p><strong>Owns:</strong> order lifecycle, idempotency records, and its outbox.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Inventory Service</h3>
+          <p>Owns stock by SKU and fulfillment location. Atomically reserves or rejects requested quantities with an expiry.</p>
+          <p><strong>Invariant:</strong> active reservations plus committed allocations cannot exceed sellable stock.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Payment Service</h3>
+          <p>Owns payment attempts and provider tokens. Authorizes through a provider adapter and captures only at the chosen fulfillment milestone.</p>
+          <p><strong>Security:</strong> do not store raw card numbers; use a compliant payment provider/tokenization flow.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Fulfillment Service</h3>
+          <p>Creates warehouse work after order confirmation, tracks package and carrier status, and emits shipment events.</p>
+          <p><strong>Downstream:</strong> notification consumers send email, push, or SMS without blocking order writes.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Identity, Pricing, and Delivery Promise</h3>
+          <p>Identity authenticates customers; Pricing calculates eligible offer, tax, and discounts; Promise estimates delivery dates.</p>
+          <p><strong>Boundary:</strong> checkout stores the final quoted amounts and terms on the order for an auditable purchase.</p>
+        </article>
+      </div>
+
+      <h3 class="section-title">Core API contracts</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Endpoint</th><th>Purpose</th><th>Key behavior</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>GET /v1/products/{productId}</code></td>
+              <td>Product detail</td>
+              <td>Cacheable response; includes current offers and a freshness timestamp, not a stock reservation.</td>
+            </tr>
+            <tr>
+              <td><code>PUT /v1/carts/{cartId}/items/{offerId}</code></td>
+              <td>Add or update cart line</td>
+              <td>Accepts quantity and expected cart version; returns updated cart or a version conflict.</td>
+            </tr>
+            <tr>
+              <td><code>POST /v1/checkouts</code></td>
+              <td>Place order</td>
+              <td>Requires <code>Idempotency-Key</code>; accepts cart ID, address ID, payment token, and expected cart version.</td>
+            </tr>
+            <tr>
+              <td><code>GET /v1/orders/{orderId}</code></td>
+              <td>Track purchase</td>
+              <td>Authorizes owner access; returns order state, item snapshots, totals, and shipment summary.</td>
+            </tr>
+            <tr>
+              <td><code>POST /internal/reservations</code></td>
+              <td>Reserve inventory</td>
+              <td>Internal authenticated call; includes order ID as a deduplication key and reservation expiry.</td>
+            </tr>
+            <tr>
+              <td><code>POST /internal/payments/authorizations</code></td>
+              <td>Authorize funds</td>
+              <td>Internal authenticated call; uses order/payment attempt ID as provider idempotency reference.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="section-title">Checkout sequence: reserve, authorize, confirm</h3>
+      <div class="flow">
+        <ol class="pattern-list">
+          <li><strong>Client → Checkout:</strong> send cart, address, payment token, and idempotency key. Authenticate and validate request shape.</li>
+          <li><strong>Checkout → Cart / Pricing:</strong> verify cart version, re-price every offer, calculate tax and delivery, and freeze an order snapshot.</li>
+          <li><strong>Checkout → Order store:</strong> create <code>PENDING</code> order plus <code>CheckoutStarted</code> outbox record in one local transaction; return the same order for duplicate idempotency keys.</li>
+          <li><strong>Order saga → Inventory:</strong> atomically reserve all lines (or fail the reservation) with a bounded expiry. Emit <code>InventoryReserved</code>.</li>
+          <li><strong>Order saga → Payment:</strong> authorize the total using a stable provider idempotency reference. Do not expose payment secrets to other services.</li>
+          <li><strong>Order store:</strong> transition to <code>CONFIRMED</code>, persist <code>OrderConfirmed</code> in the outbox, and return the order ID/status to the client.</li>
+          <li><strong>Async consumers:</strong> fulfillment creates warehouse work; notification sends confirmation; analytics updates its projection. Each consumer deduplicates event IDs.</li>
+          <li><strong>Failure compensation:</strong> if authorization is declined, release inventory and mark the order <code>PAYMENT_FAILED</code>. If a later step fails, execute the explicit compensation and alert when compensation itself needs intervention.</li>
+        </ol>
+      </div>
+
+      <h3 class="section-title">Order state and failure handling</h3>
+      <p class="section-intro">Transitions are validated by the Order Service; shipment and refund events are separate milestones.</p>
+      <div class="state-list" aria-label="Order lifecycle states">
+        <span class="state">PENDING</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">RESERVING</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">PAYMENT_AUTHORIZED</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">CONFIRMED</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">FULFILLING</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">SHIPPED</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">DELIVERED</span>
+      </div>
+      <div class="state-list" aria-label="Alternative order outcomes">
+        <span class="state">PENDING</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">CANCELLED</span>
+        <span class="state">PAYMENT_AUTHORIZED</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">PAYMENT_FAILED</span>
+        <span class="state">CONFIRMED</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">CANCEL_REQUESTED</span><span class="state-arrow" aria-hidden="true">→</span>
+        <span class="state">REFUND_PENDING</span>
+      </div>
+      <div class="callout">
+        <strong>Payment timeout is ambiguous:</strong> the provider may have authorized the payment even if the response was lost.
+        Query or retry using the same provider idempotency reference; do not create a fresh charge attempt until the first outcome is known.
+      </div>
+
+      <h3 class="section-title">Data model: own the write, publish the fact</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Owner</th><th>Core records</th><th>Useful keys / constraints</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Catalog</td>
+              <td><code>Product(product_id, title, attributes, media_refs)</code><br><code>Offer(offer_id, product_id, seller_id, price, currency, status)</code></td>
+              <td>Index product attributes for reads; validate offer status and version at checkout.</td>
+            </tr>
+            <tr>
+              <td>Cart</td>
+              <td><code>Cart(cart_id, customer_id, version, updated_at)</code><br><code>CartLine(cart_id, offer_id, quantity)</code></td>
+              <td>Partition/lookup by customer; update with version check; expire abandoned carts.</td>
+            </tr>
+            <tr>
+              <td>Order</td>
+              <td><code>Order(order_id, customer_id, idempotency_key, status, currency, subtotal, tax, total, version, created_at)</code><br><code>OrderLine(order_id, offer_id, product_snapshot, unit_price, quantity)</code></td>
+              <td>Index <code>(customer_id, created_at)</code>; unique <code>(customer_id, idempotency_key)</code>; preserve immutable purchase snapshots.</td>
+            </tr>
+            <tr>
+              <td>Inventory</td>
+              <td><code>Stock(sku, location_id, on_hand, allocated, version)</code><br><code>Reservation(reservation_id, order_id, sku, quantity, status, expires_at)</code></td>
+              <td>Unique reservation key by order and line; conditional atomic update prevents concurrent oversell; index expiry for release jobs.</td>
+            </tr>
+            <tr>
+              <td>Payment</td>
+              <td><code>PaymentAttempt(attempt_id, order_id, provider_ref, amount, status)</code></td>
+              <td>Unique provider/idempotency reference; tokenized payment data only; append attempt history rather than overwriting audit facts.</td>
+            </tr>
+            <tr>
+              <td>Outbox / Inbox</td>
+              <td><code>Outbox(event_id, aggregate_id, event_type, payload, created_at, published_at)</code><br><code>Inbox(consumer, event_id, processed_at)</code></td>
+              <td>Index unpublished outbox rows; unique inbox <code>(consumer, event_id)</code> guards duplicate delivery.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="section-title">Concurrency, scale, and reliability choices</h3>
+      <div class="lld-grid">
+        <article class="lld-card">
+          <h3>Prevent overselling</h3>
+          <p>Reserve with a conditional atomic update or serializable transaction on the inventory owner. Model per-location stock; expire abandoned reservations and release them idempotently.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Partition for traffic</h3>
+          <p>Partition carts/orders by customer or order ID and inventory by SKU + location. Avoid a single global hot counter; use regional inventory pools or controlled allocation where the business allows.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Handle duplicate / out-of-order events</h3>
+          <p>Give every event an ID and aggregate version. Consumers persist their inbox receipt and apply only valid transitions; make handlers safe to replay.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Protect service capacity</h3>
+          <p>Set deadlines per dependency, bounded retries with jitter, circuit breakers, bulkheads, queue limits, and backpressure. Shed optional work before checkout work.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Separate critical and flexible consistency</h3>
+          <p>Order and payment state require authoritative writes. Search, recommendations, and customer order-history projections can be eventually consistent with visible freshness/status.</p>
+        </article>
+        <article class="lld-card">
+          <h3>Security and privacy</h3>
+          <p>Authenticate every client request, authorize order ownership, encrypt data in transit/at rest, use least-privilege service identities, redact PII from logs, and use a PCI-compliant payment provider.</p>
+        </article>
+      </div>
+
+      <h3 class="section-title">Illustrative event contract</h3>
+      <div class="code-flow">{
+  "eventId": "evt_01J...",
+  "eventType": "OrderConfirmed",
+  "schemaVersion": 1,
+  "occurredAt": "2026-10-15T12:00:00Z",
+  "aggregateId": "ord_...",
+  "aggregateVersion": 4,
+  "correlationId": "checkout_...",
+  "data": {
+    "orderId": "ord_...",
+    "customerId": "cus_...",
+    "currency": "USD",
+    "totalMinorUnits": 12999
+  }
+}</div>
+      <p class="note">Use schema-versioned events, stable identifiers, and data minimization. Avoid publishing payment secrets or unnecessary personal data.</p>
+
+      <h3 class="section-title">How to present this LLD in an interview</h3>
+      <div class="card">
+        <ol class="pattern-list">
+          <li>Clarify scope, marketplace vs. first-party offers, traffic shape, stock policy, payment milestones, and delivery requirements.</li>
+          <li>Define functional and non-functional requirements before choosing databases or queues.</li>
+          <li>Draw service boundaries around ownership and invariants; state which calls are synchronous and which are events.</li>
+          <li>Walk the checkout saga and explain idempotency, payment ambiguity, inventory reservation, and compensating actions.</li>
+          <li>Show core entities, keys, indexes, concurrency controls, and one event contract.</li>
+          <li>Close with bottlenecks, failure modes, observability, security, and the trade-offs of eventual consistency.</li>
+        </ol>
+      </div>
+    </section>
+
+    <h2 class="section-title">Technology Stack</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Technology</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Language</td>
+          <td>C#, ASP.NET Core, .NET</td>
+        </tr>
+        <tr>
+          <td>Orchestration</td>
+          <td>Azure Service Fabric</td>
+        </tr>
+        <tr>
+          <td>Databases</td>
+          <td>Azure SQL, Cosmos DB, Dataverse</td>
+        </tr>
+        <tr>
+          <td>Messaging</td>
+          <td>Azure Service Bus, Event Hubs</td>
+        </tr>
+        <tr>
+          <td>Real-time</td>
+          <td>SignalR / Azure SignalR</td>
+        </tr>
+        <tr>
+          <td>Monitoring</td>
+          <td>Application Insights, Azure Monitor, Log Analytics</td>
+        </tr>
+        <tr>
+          <td>Security</td>
+          <td>Azure AD, token-based access, encryption, RBAC</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">Why It Matters</h2>
+    <div class="card">
+      <p>
+        This platform is designed for enterprise-scale, customer-facing operations where conversations must be routed quickly,
+        reliably, and with the correct business context. It balances performance, resilience, security, and scalability
+        while supporting multiple channels and complex work assignment logic.
+      </p>
+      <p>
+        In interview terms: <strong>“CRM.Omnichannel is a cloud-native, microservice-based, event-driven customer service platform
+        built on Azure and .NET. It supports omnichannel engagement, intelligent routing, and real-time agent coordination,
+        using patterns like CQRS, event-driven integration, retry/circuit-breaker resiliency, and state-driven workflow processing.”</strong>
+      </p>
+    </div>
+  </div>
+  <script src="app-protection.js" defer></script>
+</body>
+</html>

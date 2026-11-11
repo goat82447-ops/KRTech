@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Learn C#/.NET, Azure, Angular, system design, and AI with KR7Tech. Start with beginner-friendly foundations or build senior-level engineering skills with trainer Krishna."
+    />
+    <meta name="theme-color" content="#101923" />
+    <title>KR7Tech | Learn, Build, Grow</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --page: #101923;
+        --surface: #172431;
+        --surface-raised: #1d2c3b;
+        --ink: #f4f7fa;
+        --muted: #b7c3cf;
+        --line: #334455;
+        --brand: #50dfbf;
+        --brand-dark: #133c3a;
+        --accent: #ffca7a;
+        --max-width: 1160px;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--page);
+        color: var(--ink);
+        font-family: "Aptos", "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+      a { color: inherit; }
+      .topbar {
+        position: sticky;
+        z-index: 5;
+        top: 0;
+        display: flex;
+        min-height: 68px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 8px max(22px, calc((100vw - var(--max-width)) / 2));
+        border-bottom: 1px solid rgba(183, 195, 207, .14);
+        background: rgba(16, 25, 35, .94);
+        backdrop-filter: blur(14px);
+      }
+      .brand {
+        color: var(--ink);
+        font-size: 1.15rem;
+        font-weight: 900;
+        letter-spacing: -.04em;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .brand span { color: var(--brand); }
+      .topnav { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+      .topnav a {
+        padding: 8px 11px;
+        border-radius: 8px;
+        color: var(--muted);
+        font-size: .85rem;
+        font-weight: 750;
+        text-decoration: none;
+      }
+      .topnav a:hover, .topnav a:focus-visible { background: var(--surface-raised); color: var(--ink); outline: none; }
+      .topnav .nav-cta { background: var(--brand); color: #09241f; }
+      main { width: min(calc(100% - 40px), var(--max-width)); margin: 0 auto; }
+      section[id] { scroll-margin-top: 88px; }
+      .hero {
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        min-height: 500px;
+        align-content: center;
+        padding: clamp(48px, 8vw, 94px) 0;
+      }
+      .hero::after {
+        position: absolute;
+        z-index: -1;
+        top: 6%;
+        right: -12%;
+        width: min(60vw, 650px);
+        aspect-ratio: 1;
+        border: 1px solid rgba(80, 223, 191, .17);
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(80, 223, 191, .12), transparent 68%);
+        content: "";
+      }
+      .eyebrow, .section-kicker {
+        margin: 0 0 10px;
+        color: var(--brand);
+        font-size: .78rem;
+        font-weight: 900;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+      }
+      h1 {
+        max-width: 790px;
+        margin: 0;
+        font-size: clamp(2.8rem, 7vw, 5.7rem);
+        letter-spacing: -.065em;
+        line-height: .99;
+      }
+      h1 span { color: var(--brand); }
+      .hero-copy {
+        max-width: 690px;
+        margin: 22px 0 0;
+        color: var(--muted);
+        font-size: clamp(1.05rem, 2vw, 1.25rem);
+      }
+      .actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 27px; }
+      .button {
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 18px;
+        border: 1px solid transparent;
+        border-radius: 9px;
+        background: var(--brand);
+        color: #09241f;
+        font-weight: 900;
+        text-decoration: none;
+        transition: transform 150ms ease, background 150ms ease;
+      }
+      .button:hover { transform: translateY(-2px); background: #75efd4; }
+      .button.secondary { border-color: #536778; background: transparent; color: var(--ink); }
+      .button.secondary:hover { background: var(--surface-raised); }
+      .hero-note { margin: 13px 0 0; color: #96a9b8; font-size: .83rem; }
+      .value-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        background: var(--line);
+      }
+      .value-strip span { padding: 15px 12px; background: var(--surface); color: #d7e1e9; font-size: .88rem; font-weight: 800; text-align: center; }
+      .content-section { padding: 76px 0 14px; }
+      .section-heading { max-width: 780px; margin: 0; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: -.04em; line-height: 1.1; }
+      .section-copy { max-width: 760px; margin: 12px 0 0; color: var(--muted); }
+      .audience-grid, .course-grid, .steps-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; margin-top: 23px; }
+      .audience-card, .course-card, .step-card, .trainer-card, .pro-panel, .experience-panel {
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: var(--surface);
+      }
+      .audience-card { padding: clamp(20px, 4vw, 31px); }
+      .audience-card.beginner { border-top: 3px solid var(--brand); }
+      .audience-card.professional { border-top: 3px solid var(--accent); }
+      .card-label { margin: 0 0 8px; color: var(--brand); font-size: .75rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+      .professional .card-label { color: var(--accent); }
+      .audience-card h3, .course-card h3, .step-card h3, .trainer-card h3, .pro-panel h3 { margin: 0; font-size: 1.17rem; }
+      .audience-card p, .course-card p, .step-card p, .trainer-card p, .pro-panel p { color: var(--muted); }
+      .audience-card ul, .trainer-card ul, .pro-panel ul { display: grid; gap: 7px; margin: 15px 0 0; padding-left: 19px; color: #d6e0e7; }
+      .course-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .course-card {
+        display: flex;
+        min-height: 215px;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        text-decoration: none;
+        transition: transform 150ms ease, border-color 150ms ease;
+      }
+      .course-card:hover, .course-card:focus-visible { transform: translateY(-3px); border-color: var(--brand); outline: none; }
+      .course-icon { display: grid; width: 40px; height: 40px; margin-bottom: 15px; place-items: center; border-radius: 10px; background: var(--brand-dark); color: var(--brand); font-size: .78rem; font-weight: 900; }
+      .course-card p { margin: 7px 0 15px; font-size: .9rem; }
+      .course-link { margin-top: auto; color: var(--brand); font-size: .85rem; font-weight: 850; }
+      .steps-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .step-card { padding: 19px; }
+      .step-number { color: var(--brand); font-size: .78rem; font-weight: 900; letter-spacing: .1em; }
+      .step-card h3 { margin-top: 8px; }
+      .step-card p { margin-bottom: 0; font-size: .9rem; }
+      .trainer-card {
+        display: grid;
+        grid-template-columns: minmax(200px, .75fr) 1.25fr;
+        gap: 28px;
+        align-items: center;
+        margin-top: 23px;
+        padding: clamp(22px, 5vw, 40px);
+        background: linear-gradient(125deg, #193630, var(--surface) 56%);
+      }
+      .trainer-mark {
+        display: grid;
+        width: min(100%, 220px);
+        aspect-ratio: 1;
+        place-items: center;
+        border: 1px solid rgba(80, 223, 191, .38);
+        border-radius: 50%;
+        background: radial-gradient(circle, #245448, #172b2c 68%);
+        color: var(--brand);
+        font-size: 3rem;
+        font-weight: 950;
+        letter-spacing: -.08em;
+      }
+      .trainer-card .section-kicker { margin-bottom: 6px; }
+      .trainer-card p:last-child { margin-bottom: 0; }
+      .pro-panel { display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center; margin-top: 23px; padding: clamp(21px, 4vw, 34px); }
+      .pro-panel p { margin-bottom: 0; }
+      .experience-panel { margin-top: 23px; padding: clamp(18px, 4vw, 29px); }
+      .experience-panel h3 { margin: 0 0 5px; font-size: 1.2rem; }
+      .experience-panel > p { margin: 0; color: var(--muted); }
+      .experience-form { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) minmax(170px, .9fr) auto; align-items: end; gap: 11px; margin-top: 18px; }
+      .experience-form label { display: grid; gap: 6px; color: #d1dce4; font-size: .82rem; font-weight: 800; }
+      .experience-form select { min-height: 44px; padding: 8px 11px; border: 1px solid #536778; border-radius: 8px; background: #101923; color: var(--ink); font: inherit; }
+      .experience-form button { min-height: 44px; padding: 8px 16px; border: 0; border-radius: 8px; background: var(--brand); color: #09241f; font: inherit; font-weight: 900; cursor: pointer; }
+      .experience-form button:disabled { cursor: wait; opacity: .6; }
+      .experience-status { min-height: 24px; margin: 13px 0 0 !important; color: var(--muted); font-size: .88rem; }
+      .experience-results { display: grid; gap: 10px; margin-top: 12px; }
+      .experience-card { padding: 15px 16px; border: 1px solid var(--line); border-radius: 11px; background: #111b25; }
+      .experience-card.locked { background: #211f23; }
+      .experience-locked-preview { filter: blur(9px); pointer-events: none; user-select: none; }
+      .experience-card-meta { margin: 0 0 7px !important; color: var(--brand) !important; font-size: .75rem; font-weight: 850; }
+      .experience-company-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 9px; color: var(--muted); font-size: .75rem; }
+      .experience-company-tags span { padding: 2px 7px; border: 1px solid #536778; border-radius: 999px; color: #d7e1e9; font-weight: 750; }
+      .experience-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+      .experience-card h3 { margin: 0; font-size: .98rem; line-height: 1.4; }
+      .experience-badge { flex: 0 0 auto; padding: 3px 8px; border-radius: 999px; background: #403640; color: #ffdb9c; font-size: .67rem; font-weight: 900; }
+      .experience-badge.free { background: #163d32; color: #71e2b2; }
+      .experience-answer { margin: 11px 0 0 !important; color: #d5dee6 !important; }
+      .experience-example { margin: 10px 0 0 !important; padding-top: 9px; border-top: 1px solid var(--line); color: #b7c3cf !important; font-size: .88rem; }
+      .experience-upgrade { display: inline-flex; margin-top: 10px; color: var(--brand); font-weight: 850; }
+      button.experience-upgrade { padding: 8px 12px; border: 1px solid var(--brand); border-radius: 7px; background: transparent; color: var(--brand); font: inherit; font-weight: 850; cursor: pointer; }
+      .experience-footer { margin-top: 14px !important; font-size: .88rem; }
+      .experience-footer a { color: var(--brand); font-weight: 850; }
+      .faq-list { display: grid; gap: 9px; margin-top: 21px; }
+      .faq-list details { padding: 15px 17px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+      .faq-list summary { cursor: pointer; font-weight: 850; }
+      .faq-list p { margin: 9px 0 0; color: var(--muted); }
+      footer { margin-top: 75px; padding: 23px 0 35px; border-top: 1px solid var(--line); color: #93a4b2; font-size: .85rem; }
+      footer a { color: var(--brand); }
+      @media (max-width: 850px) {
+        .course-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .steps-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      @media (max-width: 620px) {
+        .topbar { align-items: flex-start; flex-direction: column; gap: 3px; padding: 9px 14px; }
+        .topnav { justify-content: flex-start; gap: 1px; }
+        .topnav a { padding: 7px 8px; font-size: .77rem; }
+        main { width: min(calc(100% - 28px), var(--max-width)); }
+        .hero { min-height: 410px; padding: 54px 0; }
+        .value-strip { grid-template-columns: repeat(2, 1fr); }
+        .content-section { padding-top: 56px; }
+        .audience-grid, .course-grid, .steps-grid, .trainer-card, .pro-panel { grid-template-columns: 1fr; }
+        .trainer-mark { width: 115px; font-size: 2rem; }
+        .experience-form { grid-template-columns: 1fr; }
+        .experience-form button { width: 100%; }
+        .pro-panel .button { width: 100%; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="KR7Tech home">KR7<span>Tech</span></a>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="#learning-paths">Learning paths</a>
+        <a href="#training">Training</a>
+        <a href="#interview-qa">Free Q&amp;A</a>
+        <a class="nav-cta" href="Company-Interviews.html#access-heading">Explore Pro</a>
+      </nav>
+    </header>
+    <main>
+      <section class="hero" aria-labelledby="hero-heading">
+        <p class="eyebrow">KR7Tech · Learn with purpose</p>
+        <h1 id="hero-heading">Start from the basics.<br /><span>Grow into the expert.</span></h1>
+        <p class="hero-copy">Practical software training for students, career starters, and experienced engineers. Learn C#/.NET, Azure, Angular, system design, and more through clear explanations, hands-on practice, and interview preparation.</p>
+        <div class="actions">
+          <a class="button" href="#learning-paths">Find your learning path</a>
+          <a class="button secondary" href="#training">Explore training with Krishna</a>
+        </div>
+        <p class="hero-note">Preview the learning paths and sample interview questions for free. Upgrade for complete topic lessons and additional practice.</p>
+      </section>
+
+      <div class="value-strip" aria-label="KR7Tech learning principles">
+        <span>Beginner-friendly foundations</span>
+        <span>Step-by-step examples</span>
+        <span>Real-world engineering topics</span>
+        <span>Interview and career practice</span>
+      </div>
+
+      <section id="learning-paths" class="content-section" aria-labelledby="paths-heading">
+        <p class="section-kicker">Choose your starting point</p>
+        <h2 class="section-heading" id="paths-heading">Learning paths for where you are today</h2>
+        <p class="section-copy">You do not need to know everything before you begin. Start with the path that fits your experience, then build toward your next goal.</p>
+        <div class="audience-grid">
+          <article class="audience-card beginner">
+            <p class="card-label">Students &amp; beginners</p>
+            <h3>Build strong foundations, one step at a time</h3>
+            <p>Learn core programming and web concepts before moving into frameworks, cloud, and projects.</p>
+            <ul>
+              <li>Start with C# and programming fundamentals</li>
+              <li>Understand databases, APIs, and frontend basics</li>
+              <li>Practice with guided examples and small projects</li>
+              <li>Build confidence for internships and your first role</li>
+            </ul>
+          </article>
+          <article class="audience-card professional">
+            <p class="card-label">Working engineers &amp; senior professionals</p>
+            <h3>Deepen expertise and prepare for the next level</h3>
+            <p>Strengthen architecture, production engineering, cloud delivery, and technical communication.</p>
+            <ul>
+              <li>Go deeper into .NET, Azure, Angular, and system design</li>
+              <li>Explore reliability, performance, security, and trade-offs</li>
+              <li>Practice system-design and senior-level interview discussions</li>
+              <li>Connect concepts to practical project scenarios</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="courses" class="content-section" aria-labelledby="courses-heading">
+        <p class="section-kicker">Explore the library</p>
+        <h2 class="section-heading" id="courses-heading">Learn the technologies employers use</h2>
+        <p class="section-copy">Choose a subject to open its current guide, roadmap, practice, or interview question bank.</p>
+        <div class="course-grid">
+          <a class="course-card" href="C%23Dotnet.html">
+            <span class="course-icon" aria-hidden="true">C#</span>
+            <h3>C# &amp; .NET</h3>
+            <p>Programming foundations, ASP.NET Core, EF Core, async, security, and production internals.</p>
+            <span class="course-link">Explore .NET learning →</span>
+          </a>
+          <a class="course-card" href="AZURECICD.html">
+            <span class="course-icon" aria-hidden="true">AZ</span>
+            <h3>Azure &amp; CI/CD</h3>
+            <p>Cloud foundations, secure delivery, messaging, pipelines, and deployment concepts.</p>
+            <span class="course-link">Explore Azure learning →</span>
+          </a>
+          <a class="course-card" href="Company-Interviews.html?topic=Angular">
+            <span class="course-icon" aria-hidden="true">NG</span>
+            <h3>Angular &amp; frontend</h3>
+            <p>Study component design, services, RxJS, state, performance, and architecture questions.</p>
+            <span class="course-link">Explore Angular Q&amp;A →</span>
+          </a>
+          <a class="course-card" href="System-Design.html">
+            <span class="course-icon" aria-hidden="true">SD</span>
+            <h3>System design</h3>
+            <p>Learn requirements, APIs, data modeling, architecture, scaling, reliability, and trade-offs.</p>
+            <span class="course-link">Explore system design →</span>
+          </a>
+          <a class="course-card" href="Company-Interviews.html?topic=SQL">
+            <span class="course-icon" aria-hidden="true">SQL</span>
+            <h3>SQL &amp; data</h3>
+            <p>Practice database fundamentals, query thinking, indexes, transactions, and interview answers.</p>
+            <span class="course-link">Explore SQL Q&amp;A →</span>
+          </a>
+          <a class="course-card" href="How%20AI%20work.html">
+            <span class="course-icon" aria-hidden="true">AI</span>
+            <h3>AI, RAG &amp; agents</h3>
+            <p>Understand LLMs, retrieval-augmented generation, agent workflows, and responsible implementation.</p>
+            <span class="course-link">Explore AI learning →</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="training" class="content-section" aria-labelledby="training-heading">
+        <p class="section-kicker">Training approach</p>
+        <h2 class="section-heading" id="training-heading">Understand it. Build it. Explain it.</h2>
+        <p class="section-copy">KR7Tech training is designed to help learners move beyond memorizing definitions. Follow a clear progression from core ideas to implementation and interview-ready explanations.</p>
+        <div class="steps-grid">
+          <article class="step-card"><span class="step-number">STEP 01</span><h3>Learn the why</h3><p>Start with plain-language explanations, core vocabulary, and the problem a technology solves.</p></article>
+          <article class="step-card"><span class="step-number">STEP 02</span><h3>See how it works</h3><p>Follow diagrams, examples, and step-by-step walkthroughs of important concepts.</p></article>
+          <article class="step-card"><span class="step-number">STEP 03</span><h3>Practice by building</h3><p>Apply the ideas with code, design exercises, debugging practice, and realistic scenarios.</p></article>
+          <article class="step-card"><span class="step-number">STEP 04</span><h3>Explain your decisions</h3><p>Practice technical Q&amp;A, trade-offs, project stories, and interview communication.</p></article>
+        </div>
+        <article class="trainer-card" aria-labelledby="trainer-heading">
+          <div class="trainer-mark" aria-hidden="true">K</div>
+          <div>
+            <p class="section-kicker">Your trainer</p>
+            <h3 id="trainer-heading">Learn with Krishna at KR7Tech</h3>
+            <p>Krishna guides learners through technical subjects with a focus on clear foundations, practical examples, and the reasoning behind engineering choices. The learning paths are intended for new learners as well as professionals who want to deepen their skills.</p>
+            <p>Explore the available material now, then use the guided paths to choose what to study next.</p>
+            <a class="button secondary" href="#courses">Browse learning topics</a>
+          </div>
+        </article>
+      </section>
+
+      <section id="interview-qa" class="content-section" aria-labelledby="interview-heading">
+        <p class="section-kicker">Free to start</p>
+        <h2 class="section-heading" id="interview-heading">Try interview Q&amp;A for your experience level</h2>
+        <p class="section-copy">Choose from 16 technical and professional subjects, from beginner foundations to senior-level design. The first 10 questions per subject are free; additional answers may require Pro access. Company labels are preparation filters, not claims that an employer asked that exact question.</p>
+        <section id="experience-qa" class="experience-panel" aria-labelledby="experience-heading">
+          <h3 id="experience-heading">Build your interview question set</h3>
+          <p>Choose one subject or all subjects, then select your professional experience range.</p>
+          <form id="experience-form" class="experience-form">
+            <label for="experience-topic">Technology
+              <select id="experience-topic" name="topic">
+                <option>All subjects</option>
+                <option>C# / .NET</option><option>ASP.NET Core</option><option>EF Core</option><option>LINQ</option><option>Angular</option><option>JavaScript / TypeScript</option><option>Azure</option><option>DevOps</option><option>SQL</option><option>System Design</option><option>REST APIs</option><option>Microservices</option><option>Identity &amp; Security</option><option>Testing</option><option>Data Structures &amp; Algorithms</option><option>Behavioral</option>
+              </select>
+            </label>
+            <label for="experience-level">Professional experience
+              <select id="experience-level" name="level">
+                <option value="0-2 years">0-2 years · Foundations</option><option value="3-5 years">3-5 years · Mid-level</option><option value="6-10 years">6-10 years · Advanced</option><option value="10+ years">10+ years · Senior / expert</option>
+              </select>
+            </label>
+            <label for="experience-company">Company preparation
+              <select id="experience-company" name="company">
+                <option>All companies</option><option>TCS</option><option>Infosys</option><option>Accenture</option><option>Microsoft</option><option>Amazon</option><option>Google</option>
+              </select>
+            </label>
+            <button type="submit">Show my questions</button>
+          </form>
+          <p id="experience-status" class="experience-status" role="status" aria-live="polite">Choose a subject and experience range to load matching interview questions and answers. Each level includes question tags for company preparation.</p>
+          <div id="experience-results" class="experience-results"></div>
+          <p class="experience-footer"><a id="experience-sign-in" href="Company-Interviews.html#access-heading">Explore Pro access</a> for answers after the free preview.</p>
+        </section>
+      </section>
+
+      <section id="pro-access" class="content-section" aria-labelledby="pro-heading">
+        <p class="section-kicker">Keep progressing</p>
+        <h2 class="section-heading" id="pro-heading">Unlock more practice when you are ready</h2>
+        <div class="pro-panel">
+          <div>
+            <h3>KR7Tech Pro access</h3>
+            <p>Start with course previews and free interview questions, then view current Pro options for complete learning guides, additional answers, and practice content. Available providers and prices are shown on the access page; checkout availability depends on the platform configuration.</p>
+          </div>
+          <a class="button" href="Company-Interviews.html#access-heading">View Pro options</a>
+        </div>
+      </section>
+
+      <section id="faq" class="content-section" aria-labelledby="faq-heading">
+        <p class="section-kicker">Good to know</p>
+        <h2 class="section-heading" id="faq-heading">Questions learners often ask</h2>
+        <div class="faq-list">
+          <details><summary>Is KR7Tech suitable if I am completely new?</summary><p>Yes. The learning paths include beginner-friendly material. Start with C#/.NET foundations and progress into web development, databases, and cloud topics at your own pace.</p></details>
+          <details><summary>Can experienced developers use the platform?</summary><p>Yes. The guides and practice include deeper .NET internals, Azure and CI/CD, system design, AI engineering, production concerns, and experience-based interview questions.</p></details>
+          <details><summary>Do I have to pay before I can start?</summary><p>No. Preview the learning topics and try free interview questions first. Pro access unlocks the complete topic guides and additional practice content.</p></details>
+          <details><summary>Are live training schedules and course prices listed here?</summary><p>This site currently provides self-guided learning content and Pro access for selected practice material. Live cohort schedules and separate course pricing are not yet published here.</p></details>
+        </div>
+      </section>
+
+      <footer>
+        <strong>KR7Tech</strong> · Learn, build, and grow. Explore <a href="#learning-paths">learning paths</a>, <a href="#training">training topics</a>, or <a href="Company-Interviews.html#access-heading">Pro access</a>.
+      </footer>
+    </main>
+    <script src="app-protection.js" defer></script>
+    <script src="interview-experience.js" defer></script>
+    <script src="local-pro-access.js" defer></script>
+  </body>
+</html>
