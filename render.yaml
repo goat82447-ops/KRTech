@@ -1,0 +1,59 @@
+services:
+  - type: web
+    name: kr7tech
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: StudyGuide
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: PUBLIC_APP_URL
+        sync: false
+      - key: ADMIN_USER_IDS
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      - key: PAYPAL_BASE_URL
+        sync: false
+      - key: PAYPAL_PRO_USD
+        sync: false
+      - key: PAYPAL_L1_USD
+        sync: false
+      - key: PAYPAL_L2_USD
+        sync: false
+      - key: PAYPAL_L3_USD
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      - key: AI_INTERVIEW_ALLOW_ANONYMOUS
+        value: "false"
+      - key: JUDGE0_API_URL
+        sync: false
+      - key: JUDGE0_API_TOKEN
+        sync: false
